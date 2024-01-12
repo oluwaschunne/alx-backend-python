@@ -1,21 +1,10 @@
 #!/usr/bin/env python3
-
-"""
-    Adds two float numbers and returns the result.
-
-    Parameters:
-    - a (float): The first number.
-    - b (float): The second number.
-
-    Returns:
-    float: The sum of a and b.
-
-    This function takes two float numbers, 'a' and 'b', adds them together,
-    and returns the result as a float.
-"""
+"""0. Basic annotations - add"""
 
 
 def add(a: float, b: float) -> float:
-
+    """Write a type-annotated function add that
+    takes a float a and a float b as
+    arguments and returns their sum as a float."""
     result = a + b
     return result

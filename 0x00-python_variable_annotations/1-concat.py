@@ -1,7 +1,7 @@
-i#!/usr/bin/env python3
-"""0. Basic annotations - add"""
+#!/usr/bin/env python3
+"""1. Basic annotations - concat"""
 
 
 def concat(str1: str, str2: str) -> str:
-    """0. Basic annotations - add"""
+    """1. Basic annotations - concat"""
     return str1 + str2
