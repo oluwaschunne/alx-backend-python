@@ -9,7 +9,11 @@
 
     Returns:
     float: The sum of a and b.
+
+    This function takes two float numbers, 'a' and 'b', adds them together,
+    and returns the result as a float.
 """
+
 
 def add(a: float, b: float) -> float:
 
