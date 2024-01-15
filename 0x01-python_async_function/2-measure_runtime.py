@@ -5,10 +5,10 @@ Short Specializations
 Average: 118.3%
 0x01. Python - Async """
 
+import time
 import asyncio
 
 wait_n = __import__("1-concurrent_coroutines").wait_n
-import time
 
 
 def measure_time(n: int, max_delay: int) -> float:
