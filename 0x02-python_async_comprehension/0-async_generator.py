@@ -2,7 +2,7 @@
 """0x02. Python - Async Comprehension"""
 import asyncio
 from random import uniform
-from typing import AsyncGenerator
+from typing import Generator
 
 
 async def async_generator() -> AsyncGenerator[float, None]:
