@@ -3,7 +3,7 @@
 
 from typing import Dict, Mapping, Sequence, Union
 from unittest import TestCase
-
+from unittest.mock import patch, MagicMock
 from parameterized import parameterized
 from utils import access_nested_map, get_json
 
@@ -32,7 +32,7 @@ class TestAccessNestedMap(TestCase):
         with self.assertRaises(expected_exception):
             access_nested_map(nested_map, path)
 
-    class TestGetJson(unittest.TestCase):
+class TestGetJson(unittest.TestCase):
 
     @patch("utils.requests.get")
     @parameterized.expand([
