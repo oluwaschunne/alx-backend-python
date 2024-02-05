@@ -4,7 +4,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from parameterized import parameterized
-
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 from client import GithubOrgClient
 
 
@@ -66,4 +66,53 @@ class TestGithubOrgClient(unittest.TestCase):
         # Call the has_license method with the provided input
         result = github_client.has_license(repo, license_key)
 
+        self.assertEqual(result, expected_result)
+
+    @parameterized_class(
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    [
+        (org_payload, repos_payload, expected_repos, apache2_repos),
+    ]
+    )
+
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        # Mock requests.get using patch
+        cls.get_patcher = patch("requests.get")
+        cls.mock_get = cls.get_patcher.start()
+
+        cls.mock_get.side_effect = [
+            MagicMock(json=lambda: cls.org_payload),
+            MagicMock(json=lambda: cls.repos_payload),
+            # Add more mocks as needed
+        ]
+
+    @classmethod
+    def tearDownClass(cls):
+        # Stop the patcher in tearDownClass
+        cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        github_client = GithubOrgClient("example_org")
+        github_client.org = MagicMock(return_value=self.org_payload)
+
+        # Call the public_repos method
+        result = github_client.public_repos()
+
+        # Assert that the result is as expected based on the fixture
+        self.assertEqual(result, self.expected_repos)
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
+    ])
+    def test_has_license(self, repo, license_key, expected_result):
+        github_client = GithubOrgClient("example_org")
+
+        # Call the has_license method with the provided input
+        result = github_client.has_license(repo, license_key)
+
+        # Assert that the result is the expected value
         self.assertEqual(result, expected_result)
