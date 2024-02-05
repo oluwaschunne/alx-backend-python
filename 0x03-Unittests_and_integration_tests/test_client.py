@@ -83,6 +83,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher = patch("requests.get")
         cls.mock_get = cls.get_patcher.start()
 
+        # Set side_effect for mock_get to return the expected payloads based on the provided fixtures
         cls.mock_get.side_effect = [
             MagicMock(json=lambda: cls.org_payload),
             MagicMock(json=lambda: cls.repos_payload),
@@ -95,6 +96,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher.stop()
 
     def test_public_repos(self):
+        # Instantiate GithubOrgClient with a mocked org payload
         github_client = GithubOrgClient("example_org")
         github_client.org = MagicMock(return_value=self.org_payload)
 
@@ -103,6 +105,17 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
         # Assert that the result is as expected based on the fixture
         self.assertEqual(result, self.expected_repos)
+
+    def test_public_repos_with_license(self):
+        # Instantiate GithubOrgClient with a mocked org payload
+        github_client = GithubOrgClient("example_org")
+        github_client.org = MagicMock(return_value=self.org_payload)
+
+        # Call the public_repos method with the license argument
+        result = github_client.public_repos(license="apache-2.0")
+
+        # Assert that the result is as expected based on the fixture
+        self.assertEqual(result, self.apache2_repos)
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
